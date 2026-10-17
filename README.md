@@ -2,6 +2,8 @@
 
 A standalone Neovim module for creating and managing floating windows and splits. No third-party dependencies required.
 
+[简体中文](README.zh-CN.md)
+
 - [Installation](#installation)
 - [Quick start](#quick-start)
 - [Configuration](#configuration)

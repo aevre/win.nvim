@@ -2,6 +2,8 @@
 
 `win.nvim` 是一个独立的 Neovim Lua 模块，用于创建和管理浮动窗口及分屏窗口。没有第三方依赖，也不依赖特定插件管理器。
 
+[English](README.md)
+
 ## 环境要求
 
 - Neovim 0.9 或更新版本。
