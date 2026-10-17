@@ -10,7 +10,6 @@ A standalone Neovim module for creating and managing floating windows and splits
 - [Keys and actions](#keys-and-actions)
 - [Backdrop](#backdrop)
 - [Highlight groups](#highlight-groups)
-- [简体中文文档](README.zh-CN.md)
 
 ## Requirements
 
