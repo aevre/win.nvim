@@ -11,6 +11,7 @@
 ---@field meta table<string, any>
 ---@field closed? boolean
 ---@overload fun(opts? :win.Config|{}): win
+---@type win
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.new(...)
@@ -125,6 +126,12 @@ local SCROLL_DOWN = vim.api.nvim_replace_termcodes("<c-e>", true, true, true)
 ---@field [2]? string|string[]|fun(self: win): string?
 ---@field mode? string|string[]
 
+---@class win.KeymapOpts: vim.keymap.set.Opts
+---@field [1]? string
+---@field [2]? any
+---@field mode? string|string[]
+---@field buffer? integer
+
 ---@class win.Event: vim.api.keyset.create_autocmd
 ---@field buf? true
 ---@field win? true
@@ -163,7 +170,7 @@ local SCROLL_DOWN = vim.api.nvim_replace_termcodes("<c-e>", true, true, true)
 ---@field row? integer|fun(self:win):integer Row of the window. Use <1 for relative row. (default: center)
 ---@field minimal? boolean Disable a bunch of options to make the window minimal (default: true)
 ---@field position? "float"|"bottom"|"top"|"left"|"right"|"current"
----@field border? "none"|"top"|"right"|"bottom"|"left"|"top_bottom"|"hpad"|"vpad"|"rounded"|"single"|"double"|"solid"|"shadow"|"bold"|string[]|false|true
+---@field border? "none"|"top"|"right"|"bottom"|"left"|"top_bottom"|"hpad"|"vpad"|"rounded"|"single"|"double"|"solid"|"shadow"|"bold"|"vertical"|"horizontal"|string[]|false|true
 ---@field buf? integer If set, use this buffer instead of creating a new one
 ---@field file? string If set, use this file instead of creating a new buffer
 ---@field enter? boolean Enter the window after opening (default: false)
@@ -312,7 +319,12 @@ local highlights = {
 }
 local function set_highlights()
 	for name, value in pairs(highlights) do
-		local hl = type(value) == "string" and { link = value } or vim.deepcopy(value)
+		local hl ---@type vim.api.keyset.highlight
+		if type(value) == "string" then
+			hl = { link = value }
+		else
+			hl = vim.deepcopy(value)
+		end
 		hl.default = true
 		vim.api.nvim_set_hl(0, "AevreWin" .. name, hl)
 	end
@@ -1095,12 +1107,10 @@ function M:map()
 		return
 	end
 	for _, spec in pairs(self.keys) do
-		local opts = vim.deepcopy(spec)
+		local opts = vim.tbl_extend("force", {}, spec)
 		opts[1] = nil
 		opts[2] = nil
 		opts.mode = nil
-		---@diagnostic disable-next-line: cast-type-mismatch, inject-field
-		---@cast opts vim.keymap.set.Opts
 		opts.buffer = self.buf
 		opts.nowait = true
 		local rhs = spec[2]
@@ -1267,6 +1277,7 @@ function M:win_opts()
 
 	local border = self:border()
 
+	---@diagnostic disable-next-line: assign-type-mismatch
 	opts.border = border and (borders[border] or border) or "none"
 
 	if opts.relative == "cursor" then

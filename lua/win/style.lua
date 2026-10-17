@@ -1,5 +1,6 @@
 ---@class win.Style
 ---@overload fun(name: string): win.Config
+---@type win.Style
 local M = setmetatable({}, {
 	__call = function(t, ...)
 		return t.get(...)
