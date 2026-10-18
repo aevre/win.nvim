@@ -185,7 +185,3 @@ Table fields: `bg` (default `#000000`), `blend` (default `60`), `transparent` (d
 ## Highlight groups
 
 The plugin uses the `AevreWin*` prefix for window surfaces, title/footer, keys, separators, and backdrop. Define these groups after loading your colorscheme to customize the appearance. `wo.winhighlight` can override per-window highlight mappings.
-
-## Migration from the original config module
-
-The former `builtin.win` module forwards to `require("win")`. Existing `Builtin.win(...)`, terminal, and lazygit callers retain their API when this plugin is installed. Configure defaults through `require("win").setup(...)` or the existing builtin `win` options.
