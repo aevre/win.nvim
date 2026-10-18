@@ -672,41 +672,46 @@ function M:close(opts)
 	local scratch_buf = self.scratch_buf ~= self.buf and self.scratch_buf or nil
 	self:on_close()
 
-	self.win = nil
-	if scratch_buf then
-		self.scratch_buf = nil
-	end
-	if buf then
-		self.buf = nil
-	end
-
 	local close = function()
 		local errors = {} ---@type string[]
-		if win and vim.api.nvim_win_is_valid(win) then
+		local window_closed = not (win and vim.api.nvim_win_is_valid(win))
+		if not window_closed then
 			local ok, err = pcall(vim.api.nvim_win_close, win, true)
-			if not ok and (err and err:find("E444")) then
+			if ok then
+				window_closed = true
+			elseif err and err:find("E444") then
 				-- last window, so creat a split and close it again
 				vim.cmd("silent! vsplit")
-				pcall(vim.api.nvim_win_close, win, true)
-			elseif not ok then
+				window_closed = pcall(vim.api.nvim_win_close, win, true)
+				if not window_closed then
+					errors[#errors + 1] = err
+				end
+			else
 				---@diagnostic disable-next-line: assign-type-mismatch
 				errors[#errors + 1] = err
 			end
 		end
-		if buf and vim.api.nvim_buf_is_valid(buf) then
+		if window_closed and buf and vim.api.nvim_buf_is_valid(buf) then
 			local ok, err = pcall(vim.api.nvim_buf_delete, buf, { force = true })
 			errors[#errors + 1] = not ok and err or nil
 		end
-		if scratch_buf and vim.api.nvim_buf_is_valid(scratch_buf) then
+		if window_closed and scratch_buf and vim.api.nvim_buf_is_valid(scratch_buf) then
 			local ok, err = pcall(vim.api.nvim_buf_delete, scratch_buf, { force = true })
 			errors[#errors + 1] = not ok and err or nil
+		end
+		if #errors > 0 then
+			error(table.concat(errors, "\n"))
+		end
+		self.win = nil
+		if scratch_buf then
+			self.scratch_buf = nil
+		end
+		if buf then
+			self.buf = nil
 		end
 		if self.augroup then
 			pcall(vim.api.nvim_del_augroup_by_id, self.augroup)
 			self.augroup = nil
-		end
-		if #errors > 0 then
-			error(table.concat(errors, "\n"))
 		end
 	end
 	local retries = 0
