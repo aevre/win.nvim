@@ -185,3 +185,7 @@ Table fields: `bg` (default `#000000`), `blend` (default `60`), `transparent` (d
 ## Highlight groups
 
 The plugin uses the `AevreWin*` prefix for window surfaces, title/footer, keys, separators, and backdrop. Define these groups after loading your colorscheme to customize the appearance. `wo.winhighlight` can override per-window highlight mappings.
+
+## Development
+
+Run `make check` from the repository root. The guarded `plugin/win.lua` entrypoint only applies defaults; window behavior stays under `lua/win/`. Keep `setup()` safe when a plugin manager calls it again with user options.

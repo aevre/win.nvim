@@ -183,3 +183,7 @@ require("win")({
 ## 高亮组
 
 插件使用 `AevreWin*` 前缀定义窗口背景、标题/footer、按键、分隔符和遮罩高亮组。可在 colorscheme 加载后定义这些组覆盖外观。也可通过 `wo.winhighlight` 单独覆盖窗口高亮映射。
+
+## 开发
+
+在仓库根目录运行 `make check`。带 guard 的 `plugin/win.lua` 入口只应用默认配置，窗口行为保留在 `lua/win/`。插件管理器随后以用户选项再次调用 `setup()` 时必须保持安全。
