@@ -11,20 +11,20 @@
 
 ## 安装
 
-项目托管于 Codeberg：<https://codeberg.org/aevre/win.nvim>。
+同时托管于 Codeberg：<https://codeberg.org/aevre/win.nvim> 和 GitHub：<https://github.com/aevre/win.nvim>。
 
 lazy.nvim：
 
 ```lua
 {
-  "https://codeberg.org/aevre/win.nvim",
+  "https://github.com/aevre/win.nvim",
 }
 ```
 
 packer.nvim：
 
 ```lua
-use("https://codeberg.org/aevre/win.nvim")
+use("https://github.com/aevre/win.nvim")
 ```
 
 也可以自行克隆仓库并加入 Neovim 的 `runtimepath`。模块名为 `require("win")`。

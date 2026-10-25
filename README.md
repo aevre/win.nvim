@@ -20,20 +20,20 @@ A standalone Neovim module for creating and managing floating windows and splits
 
 ## Installation
 
-The canonical repository is hosted on Codeberg: <https://codeberg.org/aevre/win.nvim>.
+Available on Codeberg: <https://codeberg.org/aevre/win.nvim> and GitHub: <https://github.com/aevre/win.nvim>.
 
 With lazy.nvim:
 
 ```lua
 {
-  "https://codeberg.org/aevre/win.nvim",
+  "https://github.com/aevre/win.nvim",
 }
 ```
 
 With packer.nvim:
 
 ```lua
-use("https://codeberg.org/aevre/win.nvim")
+use("https://github.com/aevre/win.nvim")
 ```
 
 Alternatively, clone the repository and add it to Neovim's `runtimepath`. The module is available as `require("win")`.
