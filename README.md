@@ -188,4 +188,4 @@ The plugin uses the `AevreWin*` prefix for window surfaces, title/footer, keys, 
 
 ## Development
 
-Run `make check` from the repository root. The guarded `plugin/win.lua` entrypoint only applies defaults; window behavior stays under `lua/win/`. Keep `setup()` safe when a plugin manager calls it again with user options.
+Run `make check` for formatting and linting, and `make test` for headless API and lifecycle regression checks from the repository root. The guarded `plugin/win.lua` entrypoint only applies defaults; window behavior stays under `lua/win/`. Keep `setup()` safe when a plugin manager calls it again with user options.

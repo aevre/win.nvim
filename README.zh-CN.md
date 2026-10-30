@@ -186,4 +186,4 @@ require("win")({
 
 ## 开发
 
-在仓库根目录运行 `make check`。带 guard 的 `plugin/win.lua` 入口只应用默认配置，窗口行为保留在 `lua/win/`。插件管理器随后以用户选项再次调用 `setup()` 时必须保持安全。
+在仓库根目录运行 `make check` 检查格式与静态分析，运行 `make test` 执行 headless API 和生命周期回归检查。带 guard 的 `plugin/win.lua` 入口只应用默认配置，窗口行为保留在 `lua/win/`。插件管理器随后以用户选项再次调用 `setup()` 时必须保持安全。
