@@ -12,7 +12,7 @@ fmt-check:
 lint:
 	selene $(LUA_FILES)
 
-check: fmt-check lint
+check: fmt-check lint test
 
 test:
 	$(NVIM_BIN) --headless -u NONE --cmd 'set runtimepath+=.' -c 'luafile tests/smoke.lua'
