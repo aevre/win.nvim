@@ -95,7 +95,11 @@ function M.fixbuf(self)
 		local win_buf = vim.api.nvim_win_get_buf(win)
 		local is_float = vim.api.nvim_win_get_config(win).zindex ~= nil
 		if win ~= self.win and not is_float then
-			if vim.bo[win_buf].buftype == "" or vim.b[win_buf].core_main or vim.w[win].core_main then
+			if
+				vim.bo[win_buf].buftype == ""
+				or vim.b[win_buf].core_main
+				or vim.w[win].core_main
+			then
 				main = win
 				break
 			end
@@ -141,7 +145,9 @@ end
 ---@param self win
 ---@return string[]
 function M.lines(self, from, to)
-	return self:buf_valid() and vim.api.nvim_buf_get_lines(self.buf, from and from - 1 or 0, to or -1, false) or {}
+	return self:buf_valid()
+			and vim.api.nvim_buf_get_lines(self.buf, from and from - 1 or 0, to or -1, false)
+		or {}
 end
 
 ---@param from? integer 1-indexed, inclusive

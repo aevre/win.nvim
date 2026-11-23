@@ -9,7 +9,9 @@ local function normkey(key)
 		elseif lower == "localleader" then
 			return normkey("<localleader>")
 		end
-		return vim.fn.keytrans(vim.api.nvim_replace_termcodes("<" .. value .. ">", true, true, true))
+		return vim.fn.keytrans(
+			vim.api.nvim_replace_termcodes("<" .. value .. ">", true, true, true)
+		)
 	end
 	key = key:gsub("<lt>", "<")
 	local lower = key:lower()
@@ -111,7 +113,10 @@ function M.footer(self)
 			if want == nil or vim.tbl_contains(want, keymap) then
 				table.insert(self.opts.footer, { " ", "AevreWinFooter" })
 				table.insert(self.opts.footer, { " " .. keymap .. " ", "AevreWinFooterKey" })
-				table.insert(self.opts.footer, { " " .. (key.desc or keymap) .. " ", "AevreWinFooterDesc" })
+				table.insert(
+					self.opts.footer,
+					{ " " .. (key.desc or keymap) .. " ", "AevreWinFooterDesc" }
+				)
 			end
 		end
 		table.insert(self.opts.footer, { " ", "AevreWinFooter" })
@@ -220,7 +225,8 @@ function M.toggle_help(self, opts)
 		if w > len then
 			return vim.fn.strcharpart(str, 0, len - 1) .. "…"
 		end
-		return align == "right" and (string.rep(" ", len - w) .. str) or (str .. string.rep(" ", len - w))
+		return align == "right" and (string.rep(" ", len - w) .. str)
+			or (str .. string.rep(" ", len - w))
 	end
 
 	for _, keymap in ipairs(keys) do

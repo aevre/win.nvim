@@ -76,7 +76,9 @@ function M.resolve(...)
 			end
 		end
 	end
-	local ret = #merge == 0 and {} or #merge == 1 and merge[1] or vim.tbl_deep_extend("force", {}, unpack(merge))
+	local ret = #merge == 0 and {}
+		or #merge == 1 and merge[1]
+		or vim.tbl_deep_extend("force", {}, unpack(merge))
 	ret.style = nil
 	---@cast ret win.Config
 	return ret

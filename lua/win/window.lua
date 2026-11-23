@@ -26,12 +26,14 @@ end
 function M._on(self, event, opts)
 	local event_opts = {} ---@type vim.api.keyset.create_autocmd
 	local skip = { "buf", "win", "event" }
+
 	for k, v in pairs(opts) do
 		if not vim.tbl_contains(skip, k) then
 			---@diagnostic disable-next-line: assign-type-mismatch
 			event_opts[k] = v
 		end
 	end
+
 	event_opts.group = event_opts.group or self.augroup
 	event_opts.callback = function(ev)
 		table.insert(event_stack, ev.event)
@@ -280,7 +282,8 @@ function M.open_win(self)
 		self.win = vim.api.nvim_get_current_win()
 		vim.api.nvim_win_set_buf(self.win, self.buf)
 	else --split
-		local parent = self.opts.win and vim.api.nvim_win_is_valid(self.opts.win) and self.opts.win or 0
+		local parent = self.opts.win and vim.api.nvim_win_is_valid(self.opts.win) and self.opts.win
+			or 0
 		local vertical = position == "left" or position == "right"
 		-- When stacking is enabled, find an existing window with the same relative/position
 		-- and stack the new window perpendicular to it instead of creating a new split
@@ -339,7 +342,8 @@ end
 ---@param self win
 ---@return boolean?
 function M.on_current_tab(self)
-	return self:win_valid() and vim.api.nvim_get_current_tabpage() == vim.api.nvim_win_get_tabpage(self.win)
+	return self:win_valid()
+		and vim.api.nvim_get_current_tabpage() == vim.api.nvim_win_get_tabpage(self.win)
 end
 
 ---@param self win
@@ -386,7 +390,12 @@ function M.show(self)
 
 	-- syntax highlighting
 	local ft = self.opts.ft or vim.bo[self.buf].filetype
-	if ft and not ft:find("^core_") and not vim.b[self.buf].ts_highlight and vim.bo[self.buf].syntax == "" then
+	if
+		ft
+		and not ft:find("^core_")
+		and not vim.b[self.buf].ts_highlight
+		and vim.bo[self.buf].syntax == ""
+	then
 		local lang = vim.treesitter.language.get_lang(ft)
 		if not (lang and pcall(vim.treesitter.start, self.buf, lang)) then
 			vim.bo[self.buf].syntax = ft
